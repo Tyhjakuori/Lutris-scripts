@@ -1,0 +1,84 @@
+description: ""
+game_slug: clip-studio-paint-4
+gogslug: ""
+humblestoreid: ""
+installer_slug: clip-studio-paint-403-windows
+name: Clip Studio Paint 4
+notes: ""
+runner: wine
+script:
+  files:
+  - csp:
+      filename: CSP_403w_setup.exe
+      url: https://vd.clipstudio.net/clipcontent/paint/app/403/CSP_403w_setup.exe
+  - WebView2:
+      filename: MicrosoftEdgeWebview2RuntimeInstallerX64.exe
+      url: https://go.microsoft.com/fwlink/?linkid=2124701
+  game:
+    arch: win64
+    exe: $GAMEDIR/drive_c/Program Files/CELSYS/CLIP STUDIO 1.5/CLIP STUDIO PAINT/CLIPStudioPaint.exe
+    prefix: $GAMEDIR
+  installer:
+    - task:
+        arch: win64
+        description: Creating Wine 64-bit Prefix
+        name: create_prefix
+        prefix: $GAMEDIR
+    - task:
+        app: dotnet20 win10
+        arch: win64
+        description: Installing .NET Framework 2.0
+        name: winetricks
+        prefix: $GAMEDIR
+    - task:
+        app: dotnet40 win10
+        arch: win64
+        description: Installing .NET Framework 4.0
+        name: winetricks
+        prefix: $GAMEDIR
+    - task:
+        app: dotnet48 win10
+        arch: win64
+        description: Installing .NET Framework 4.8
+        name: winetricks
+        prefix: $GAMEDIR
+    - task:
+        app: cjkfonts corefonts
+        arch: win64
+        description: Installing fonts
+        name: winetricks
+        prefix: $GAMEDIR
+    - task:
+        app: vkd3d win10
+        arch: win64
+        description: Installing vkd3d
+        name: winetricks
+        prefix: $GAMEDIR
+    - task:
+        app: dxvk win10
+        arch: win64
+        description: Installing dxvk
+        name: winetricks
+        prefix: $GAMEDIR
+    - task:
+        arch: win64
+        description: Installing WebView2
+        executable: WebView2
+        name: wineexec
+        prefix: $GAMEDIR
+    - copy:
+        dst: $GAMEDIR
+        src: csp
+    - task:
+        executable: csp
+        name: wineexec
+        prefix: $GAMEDIR
+  system:
+    env:
+      DXVK_HUD: 0
+    wine:
+      use_system_wine: true
+slug: clip-studio-paint-403-windows
+steamid: null
+version: 4.0.3 Windows
+year: 2025
