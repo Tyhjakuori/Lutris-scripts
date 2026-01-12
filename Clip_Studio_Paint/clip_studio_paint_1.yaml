@@ -1,0 +1,50 @@
+description: ""
+game_slug: clip-studio-paint-1
+gogslug: ""
+humblestoreid: ""
+installer_slug: clip-studio-paint-1132-windows
+name: Clip Studio Paint 1
+notes: ""
+runner: wine
+script:
+    files:
+        - csp: https://vd.clipstudio.net/clipcontent/paint/app/1132/CSP_1132w_setup.exe
+    game:
+        arch: win64
+        exe: $GAMEDIR/drive_c/Program Files/CELSYS/CLIP STUDIO 1.5/CLIP STUDIO PAINT/CLIPStudioPaint.exe
+        prefix: $GAMEDIR
+    installer:
+        - task:
+              arch: win64
+              description: Creating Wine 64-bit Prefix
+              name: create_prefix
+              prefix: $GAMEDIR
+        - task:
+              arch: win64
+              description: Setting Windows 8.1 mode for Wine
+              key: Version
+              name: set_regedit
+              path: HKEY_CURRENT_USER\Software\Wine
+              prefix: $GAMEDIR
+              value: win81
+        - task:
+              app: cjkfonts corefonts
+              arch: win64
+              description: Installing dependencies
+              name: winetricks
+        - copy:
+              dst: $GAMEDIR
+              src: csp
+        - task:
+              executable: csp
+              name: wineexec
+              prefix: $GAMEDIR
+    system:
+        env:
+            DXVK_HUD: 0
+        wine:
+            use_system_wine: true
+slug: clip-studio-paint-1132-windows
+steamid: null
+version: 1.13.2 Windows
+year: 2023
