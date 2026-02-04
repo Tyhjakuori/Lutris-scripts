@@ -1,0 +1,51 @@
+description: ""
+game_slug: davinci-resolve-20_3_1-windows
+gogslug: ""
+humblestoreid: ""
+installer_slug: davinci-resolve-20_3_1-windows
+name: DaVinci Resolve 20.3.1
+notes: ""
+runner: wine
+
+script:
+    files:
+        - installer: "N/A:Select the game's setup file"
+    game:
+        arch: win64
+        exe: $GAMEDIR/drive_c/Program Files/Blackmagic Design/DaVinci Resolve/Resolve.exe
+        prefix: $GAMEDIR
+    installer:
+        - task:
+              arch: win64
+              description: Creating Wine 64-bit Prefix
+              name: create_prefix
+              prefix: $GAMEDIR
+        - task:
+              arch: win64
+              description: Setting Windows 10 mode for Wine
+              key: Version
+              name: set_regedit
+              path: HKEY_CURRENT_USER\Software\Wine
+              prefix: $GAMEDIR
+              value: win10
+        - task:
+              app: dxvk corefonts vkd3d ffdshow
+              arch: win64
+              description: Installing dependencies
+              name: winetricks
+        - copy:
+              dst: $GAMEDIR
+              src: installer
+        - task:
+              executable: installer
+              description: Installing app
+              name: wineexec
+              prefix: $GAMEDIR
+    system:
+        wine:
+            use_system_wine: true
+
+slug: davinci-resolve-20_3_1-windows
+steamid: null
+version: 20.3.1 Windows
+year: 2025
