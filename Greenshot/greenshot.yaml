@@ -1,0 +1,48 @@
+description: ""
+game_slug: greenshot-13312
+gogslug: ""
+humblestoreid: ""
+installer_slug: greenshot-13312-windows
+name: Greenshot
+notes: "You have to select 'Install for all users' during setup otherwise won't launch"
+runner: wine
+script:
+    files:
+        - greenshot: https://github.com/greenshot/greenshot/releases/download/v1.3.312/Greenshot-INSTALLER-1.3.312-RELEASE.exe
+    game:
+        arch: win64
+        exe: $GAMEDIR/drive_c/Program Files/Greenshot/Greenshot.exe
+        prefix: $GAMEDIR
+    installer:
+        - task:
+              arch: win64
+              description: Creating Wine 64-bit Prefix
+              name: create_prefix
+              prefix: $GAMEDIR
+        - task:
+              arch: win64
+              description: Setting Windows 10 mode for Wine
+              key: Version
+              name: set_regedit
+              path: HKEY_CURRENT_USER\Software\Wine
+              prefix: $GAMEDIR
+              value: win10
+        - task:
+              app: corefonts
+              arch: win64
+              description: Installing dependencies
+              name: winetricks
+        - copy:
+              dst: $GAMEDIR
+              src: greenshot
+        - task:
+              executable: greenshot
+              name: wineexec
+              prefix: $GAMEDIR
+    system:
+        wine:
+            use_system_wine: true
+slug: greenshot-13312-windows
+steamid: null
+version: 1.3.312 Windows
+year: 2026

@@ -1,0 +1,48 @@
+description: ""
+game_slug: designdoll
+gogslug: ""
+humblestoreid: ""
+installer_slug: designdoll-6.1.0
+name: DesignDoll
+notes: ""
+runner: wine
+script:
+    files:
+        - dedo: https://www.terawell-installer.info/setup/en/Setup.exe
+    game:
+        arch: win64
+        exe: $GAMEDIR/drive_c/Program Files (x86)/DesignDoll/DesignDollLauncher.exe
+        prefix: $GAMEDIR
+    installer:
+        - task:
+              arch: win64
+              description: Creating Wine 64-bit Prefix
+              name: create_prefix
+              prefix: $GAMEDIR
+        - task:
+              arch: win64
+              description: Setting Windows 10 mode for Wine
+              key: Version
+              name: set_regedit
+              path: HKEY_CURRENT_USER\Software\Wine
+              prefix: $GAMEDIR
+              value: win10
+        - task:
+              app: corefonts xna40 dotnet45 dxvk vkd3d vcrun2019 win10
+              arch: win64
+              description: Installing dependencies
+              name: winetricks
+        - copy:
+              dst: $GAMEDIR
+              src: dedo
+        - task:
+              executable: dedo
+              name: wineexec
+              prefix: $GAMEDIR
+    system:
+        wine:
+            use_system_wine: true
+slug: design-doll-6.1.0-windows
+steamid: null
+version: 6.1.0 Windows
+year: 2025
